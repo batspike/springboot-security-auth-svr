@@ -1,4 +1,4 @@
-
+# for h2 database
 
 drop table oauth_client_details if exists;
 create table oauth_client_details (

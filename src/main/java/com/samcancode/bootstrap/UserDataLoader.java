@@ -21,16 +21,22 @@ public class UserDataLoader implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
+		if(authorityRepo.count() == 0 && userRepo.count() == 0) {
+			createData();
+		}
+	}
+
+	private void createData() {
 		JpaAuthority user = authorityRepo.save(JpaAuthority.builder().role("ROLE_USER").build());
 		JpaAuthority admin = authorityRepo.save(JpaAuthority.builder().role("ROLE_ADMIN").build());
 		JpaAuthority cust = authorityRepo.save(JpaAuthority.builder().role("ROLE_CUSTOMER").build());
 		
 		userRepo.save(
-					JpaSecurityUser.builder()
-					.username("user")
-					.password(passwordEncoder.encode("user"))
-					.authority(user)
-					.build()
+				JpaSecurityUser.builder()
+				.username("user")
+				.password(passwordEncoder.encode("user"))
+				.authority(user)
+				.build()
 				);
 		
 		userRepo.save(
@@ -48,7 +54,5 @@ public class UserDataLoader implements CommandLineRunner {
 				.authority(cust)
 				.build()
 				);
-		
 	}
-
 }
